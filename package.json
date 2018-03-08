@@ -22,5 +22,10 @@
     "jest": "^22.4.2",
     "nodemon": "^1.17.1",
     "supertest": "^3.0.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "debugger": "DEBUG=*:* nodemon server.js"
   }
 }
