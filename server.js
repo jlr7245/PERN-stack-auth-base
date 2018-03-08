@@ -12,9 +12,16 @@ app.listen(PORT, () => {
 
 app.use(logger('dev'))
 
+app.use((req, res, next) => {
+  res.locals.data = {}
+  next()
+})
+
 app.get('/', (req, res) => {
   res.send('Hello World')
 })
+
+app.use('/api', require('./api'))
 
 app.use('*', (req, res) => {
   res.status(404).send('Not Found')
