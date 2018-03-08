@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs')
+
 const modelUtils = schema => {
   const validator = schema.reduce((acc, { key, type, optional = false, regexp = null }) => {
     acc[key] = (value) => {
@@ -32,8 +34,13 @@ const modelStatics = (db, tablename) => ({
   destroy: id => db.none(`DELETE FROM ${tablename} WHERE id = $1`, id)
 })
 
+const comparePass = (userPassword, databasePassword) => (
+  bcrypt.compareSync(userPassword, databasePassword)
+)
+
 module.exports = {
   modelUtils,
-  modelStatics
+  modelStatics,
+  comparePass
 }
 
