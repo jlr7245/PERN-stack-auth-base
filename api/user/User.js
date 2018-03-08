@@ -10,7 +10,7 @@ function User({ id = null, username, password_digest, email }) {
 }
 
 const userStatics = modelStatics(db, 'users')
-userStatics.findByUsername = (username) => {
+userStatics.findByUserName = (username) => {
   return db.one(`
     SELECT * FROM users
     WHERE username = $1
