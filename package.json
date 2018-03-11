@@ -1,5 +1,5 @@
 {
-  "name": "callcongress-rebuild",
+  "name": "pern-auth-base",
   "version": "1.0.0",
   "main": "server.js",
   "author": "J Silverstein <jess.pebble@gmail.com>",
@@ -26,6 +26,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "debugger": "DEBUG=*:* nodemon server.js"
+    "debugger": "DEBUG=*:* nodemon server.js",
+    "predeploy": "cd client && npm run build && cp -a ./build/* ../public/"
   }
 }
