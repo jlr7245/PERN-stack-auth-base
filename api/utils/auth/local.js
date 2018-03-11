@@ -2,7 +2,7 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 
 const init = require('./passport')
-const User = require('../../api/user/User')
+const User = require('../../user/User')
 const { comparePass } = require('..')
 
 const options = {};
@@ -14,7 +14,7 @@ passport.use(
     User.findByUserName(username)
       .then(user => {
         if (!user) {
-          return done(null, false);
+          return done(null, false)
         }
         if (!comparePass(password, user.password_digest)) {
           return done(null, false)

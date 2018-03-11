@@ -1,5 +1,5 @@
 const db = require('../../db/config')
-const { modelUtils, modelStatics } = require('../../utils')
+const { modelUtils, modelStatics } = require('../utils')
 const schema = require('./UserSchema')
 
 function User({ id = null, username, password_digest, email }) {

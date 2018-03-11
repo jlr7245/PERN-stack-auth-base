@@ -1,6 +1,6 @@
 const express = require('express')
-const passport = require('../../utils/auth/local')
-const send = require('../../utils/send')
+const passport = require('../utils/auth/local')
+const send = require('../utils/send')
 const {
   dash,
   verify,

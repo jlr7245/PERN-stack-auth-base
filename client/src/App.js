@@ -10,6 +10,8 @@ import RegisterForm from './components/Auth/RegisterForm'
 
 import Home from './components/Home'
 
+import Films from './tempApp'
+
 import { verifyUser } from './actions/auth'
 
 class App extends Component {
