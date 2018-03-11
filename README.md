@@ -32,7 +32,7 @@ Here is a high-level overview of our file structure.
     - [Deployment](#deployment)
 - [Server](#server)
     - [Structure](#structure)
-    - [New Models](#new-models)
+    - [Adding New Models](#adding-new-models)
     - [Routes & Controllers](#routes-controllers)
     - [`send`](#send)
 - [Client](#client)
@@ -80,7 +80,7 @@ You should not attempt to deploy this app in a two-server form. Instead, use the
 
 # Server
 
-### Structure
+## Structure
 
 Instead of following a traditional MVC file structure, this app makes use of a "domain" structure. Each domain-specific folder contains a model, a controller, middlewares, and routes specific to that domain.
 
@@ -107,6 +107,60 @@ For example, for a todo app, the file tree might resemble this:
 └── server.js 
 ```
 
+## Adding New Models
+
+The models in this app are prototype-based, and have a specific set of described behavior.
+
+- One can call `ModelName.method` for actions that reference the collection of data as a whole. 
+    - For example, one might find a todo of a specific ID by calling `Todo.findById(id)`, or find all todos by calling `Todo.findAll()`. 
+    - These collection-level methods are available on the model itself, but not on instances of that model. 
+    - Deletion is considered a collection-level action.
+- One can use the syntax `new ModelName` to create a new instance of the model, which has methods that are specific to one record in the collection. 
+    - For example, one might create a new todo record and save it by saying `new Todo(todoValues).save()`, or update a todo by saying `myTodoInstance.update(changes)`.
+    - These record-level methods are available on instances of the model, but not on the model itself.
+- When a new instance is created using `new ModelName`, the values are verified against a preset schema before any action occurs.
+- Instances are not modified directly (i.e. `instance.prop = 'thing'`) but instead alter themselves (i.e. `instance._modify({ prop: thing })`).
+
+The `utils` directory within the `api` directory contains some utility functions to help us set this functionality up. 
+
+### Building a Todo Model
+
+Let's say we wanted to build out this todo app in earnest. To create our todo model, we'd first need to set up our todo domain: a `todos` folder within `api`. Then, we'd create two files: `Todo.js` and `TodoSchema.js`.
+
+#### The Schema
+
+Within `TodoSchema.js`, we're going to describe the schema we want to use for each todo. The schema is an array of objects, which contain the following properties:
+
+- `key`: The name of the property (most commonly the column name)
+- `type`: The datatype we're expecting for this value
+- `optional`: A boolean describing whether or not the value is optional (defaults to `false`)
+- `regexp` and `regexpMessage`: If you need the value to match a regular expression (i.e. no spaces, email address, url), use the `regexp` field. `regexpMessage` is used to describe the regular expression's purpose (i.e. "Must be a valid email address".)
+- `otherCondition` and `otherConditionMessage`: `otherCondition` needs to be a method that accepts a value and returns either true or false (i.e. the value needs to be one of a specified set, etc). `otherConditionMessage` is used to describe the condition's purpose.
+
+Our `TodoSchema` might thus look like this:
+
+```js
+module.exports = [
+  {
+    key: 'id',
+    type: 'number',
+    optional: true // when the user inputs a todo and we first validate it, it has no ID
+  }, {
+    key: 'title',
+    type: 'string'
+  }, {
+    key: 'description',
+    type: 'string'
+  }, {
+    key: 'category',
+    type: 'string',
+    otherCondition: (val) => ['Home', 'Work', 'School', 'Personal'].includes(val),
+    otherConditionMessage: 'Category must be Home, Work, School, or Personal.'
+  }
+]
+```
+
+#### The Model
 
 
 # Acknowledgements & Licensing Details
