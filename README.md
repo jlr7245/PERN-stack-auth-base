@@ -1,3 +1,5 @@
+![pern-stack](https://user-images.githubusercontent.com/12768542/37250285-15cb7da8-24c7-11e8-97a5-33d613f3865b.jpg)
+
 # PERN Stack Base
 
 This app is a boilerplate for a Postgres/Express/React/Node app with basic authentication built in, using Passport and sessions.
@@ -221,7 +223,7 @@ Todo.prototype.save = function() {
 }
 ```
 
-### Routes & Controllers
+## Routes & Controllers
 
 Routes for new domains should be added to `/api/index.js`, like so:
 
@@ -237,9 +239,16 @@ If a route needs user information and also information about todos belonging to 
 
 Any time a controller ends up with data that it needs to send back to the client, it should attach that data to `res.locals.data` and then call `next`.
 
-### `send`
+## `send`
 
 `send` is a little utility function that should be at the end of every route. It simply sends back whatever happens to be in `res.locals.data`, with the status that is in `res.locals.status`.
+
+```js
+module.exports = (req, res) => {
+  const { status, data } = res.locals
+  res.status(status || 200).json(data)
+}
+```
 
 # Client
 
