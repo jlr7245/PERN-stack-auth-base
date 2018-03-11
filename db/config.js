@@ -11,7 +11,7 @@ const pgp = require('pg-promise')(options)
 function setDatabase() {
   if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
     return pgp({
-      database: 'callcongress_rebuild_dev',
+      database: process.env.LOCAL_DATABASE_NAME,
       port: 5432,
       host: 'localhost'
     })
